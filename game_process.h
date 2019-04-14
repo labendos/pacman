@@ -1,4 +1,4 @@
-//
+
 //  game_process.h
 //  Ermitage
 //
@@ -8,7 +8,9 @@
 
 #ifndef game_process_h
 #define game_process_h
-#include "ResourcePath.hpp" // Решить проблему с отображением текста
+#include "ResourcePath.hpp"
+#include <string>
+
 template < typename T, typename U >
 void parity(T & e, U & e1) // держит enemy и enemy1 в одом месте
 {
@@ -16,6 +18,14 @@ void parity(T & e, U & e1) // держит enemy и enemy1 в одом мест�
     e.y = e1.y;
     e.xi = e1.xi;
     e.yi = e1.yi;
+}
+
+template <typename T>
+std::string toString(T val)
+{
+    std::ostringstream oss;
+    oss<< val;
+    return oss.str();
 }
 
 class Game
@@ -46,14 +56,12 @@ public:
     sf::RenderWindow window;
     sf::Font font;
     sf::Text text;
-    std::stringstream ss;
+    std::string ss;
     
     Game(Pacman _packman);
     void play();
     void play1();
     void newlevel();
-    
-    
 };
 void Game::newlevel()
 {
@@ -71,15 +79,13 @@ void Game::newlevel()
     enemy1[1].init(17, 17);
     
     sf::Font font;
-    if (!font.loadFromFile(resourcePath() + "arial.ttf"))
-    {
-        return EXIT_FAILURE;
-    }
+    font.loadFromFile(resourcePath() + "arial.ttf");
     
     text.setFont(font);
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::Blue);
     text.setPosition(X*N/2 - 100, X*N + 10);
+    
 }
 
 Game::Game(Pacman _packman): packman(_packman)
@@ -96,8 +102,7 @@ Game::Game(Pacman _packman): packman(_packman)
     
     enemy1[0].init(1, 1);
     enemy1[1].init(17, 17);
-
-    sf::Font font;
+    
     if (!font.loadFromFile(resourcePath() + "arial.ttf"))
     {
         return EXIT_FAILURE;
@@ -184,9 +189,9 @@ void Game::play()
         }
         
         
-        ss.str("");
-        ss << "Score - " << score;
-        text.setString(ss.str());
+        ss="";
+        ss = "Score - " + toString(score);
+        text.setString(ss);
         
         window.clear();
         if ((fail == 0) && (score <= 20))
@@ -200,7 +205,7 @@ void Game::play()
             {
                 enemy[i].draw(&window);
             }
-            //window.draw(text);
+           window.draw(text);
         }
         
         if ((fail == 0) && (score > 20))
@@ -213,15 +218,15 @@ void Game::play()
             {
                 enemy[i].draw(&window);
             }
-            //window.draw(text);
+            window.draw(text);
         }
         
         else if (fail == 1)
         {
-            ss.str("");
-            ss << "FAIL";
-            text.setString(ss.str());
-            //window.draw(text);
+            ss = "";
+            ss = "FAIL";
+            text.setString(ss);
+            window.draw(text);
             window.display();
             
             clock.restart();
@@ -234,10 +239,10 @@ void Game::play()
         }
         else if(fail == -1)
         {
-            ss.str("");
-            ss << "VICTORY";
-            text.setString(ss.str());
-            //window.draw(text);
+            ss = "";
+            ss = "VICTORY";
+            text.setString(ss);
+            window.draw(text);
             window.display();
             
             clock.restart();
@@ -258,6 +263,7 @@ void Game::play()
     for (int i = 0; i < 5; ++i)
         parity(enemy1[i], enemy[i]);
     window.display();
+    
     return EXIT_SUCCESS;
 }
 
@@ -336,9 +342,9 @@ void Game::play1()
         }
         
         
-        ss.str("");
-        ss << "Score - " << score;
-        text.setString(ss.str());
+        ss = "";
+        ss = "Score - " + toString(score);
+        text.setString(ss);
         
         window.clear();
         if((fail == 0) && (level == 0))
@@ -352,7 +358,7 @@ void Game::play1()
             {
                 enemy1[i].draw(&window);
             }
-            //window.draw(text);
+           window.draw(text);
         }
         
         if((fail == 0) && (level == 1))
@@ -366,20 +372,14 @@ void Game::play1()
             {
                 enemy1[i].draw(&window);
             }
-            //window.draw(text);
+            window.draw(text);
         }
-        
-        /*if ((fail == 0) && (score > 30))
-        {
-            break;
-        }*/
-        
         else if(fail == 1)
         {
-            ss.str("");
-            ss << "FAIL";
-            text.setString(ss.str());
-            //window.draw(text);
+            ss = "";
+            ss = "FAIL";
+            text.setString(ss);
+            window.draw(text);
             window.display();
             
             clock.restart();
@@ -392,10 +392,10 @@ void Game::play1()
         }
         else if(fail == -1)
         {
-            ss.str("");
-            ss << "VICTORY";
-            text.setString(ss.str());
-            //window.draw(text);
+            ss = "";
+            ss = "VICTORY";
+            text.setString(ss);
+            window.draw(text);
             window.display();
             
             clock.restart();
@@ -411,7 +411,5 @@ void Game::play1()
         time_special = clock_special.getElapsedTime().asSeconds();
     }
 }
-
-
 
 #endif /* game_process_h */
