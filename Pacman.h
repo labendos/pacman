@@ -1,16 +1,20 @@
 #ifndef Pacman_h
 #define Pacman_h
-
+#include "Strawberry.h"
 class Pacman : public Character
 {
     Dots* dots;
+    Strawberry* strawberry;
     sf::Texture texture[2];
 public:
-    Pacman(Dots* _dots);
+    Pacman();
+    Pacman(Dots* _dots, Strawberry* _strawberry);
+    //init(Dots* _dots, Strawberry* _strawberry);
     int get_xi();
     int get_yi();
     int get_x();
     int get_y();
+    void init(Dots* _dots, Strawberry* _strawberry);
     void draw(sf::RenderWindow* window);
     void move_left(int* move);
     void move_down(int* move);
@@ -18,8 +22,9 @@ public:
     void move_up(int* move);
     void move(int* move);
 };
+Pacman::Pacman() {}
 
-Pacman::Pacman(Dots* _dots): dots(_dots)
+Pacman::Pacman(Dots* _dots, Strawberry* _strawberry): dots(_dots), strawberry(_strawberry)
 {
     x = N*X/2;
     xi = (N - 1)/2;
@@ -27,8 +32,24 @@ Pacman::Pacman(Dots* _dots): dots(_dots)
     yi = (N - 1)/2;
     r = X/2;
     count = 100;
-    texture[0].loadFromFile("res/pacman.jpg", sf::IntRect(0, 0, 225, 225));
-    texture[1].loadFromFile("res/pacman.jpg", sf::IntRect(260, 0, 225, 225));
+    texture[0].loadFromFile(resourcePath()+"pacman.jpg", sf::IntRect(0, 0, 225, 225));
+    texture[1].loadFromFile(resourcePath()+"pacman.jpg", sf::IntRect(260, 0, 225, 225));
+    mov = 0;
+    vel = 0.4;
+}
+
+void Pacman::init(Dots* _dots, Strawberry* _strawberry)
+{
+    dots = _dots;
+    strawberry = _strawberry;
+    x = N*X/2;
+    xi = (N - 1)/2;
+    y = N*X/2;
+    yi = (N - 1)/2;
+    r = X/2;
+    count = 100;
+    texture[0].loadFromFile(resourcePath()+"pacman.jpg", sf::IntRect(0, 0, 225, 225));
+    texture[1].loadFromFile(resourcePath()+"pacman.jpg", sf::IntRect(260, 0, 225, 225));
     mov = 0;
     vel = 0.4;
 }
@@ -71,9 +92,10 @@ void Pacman::move_left(int* move)
         --xi;
         count = 100;
         dots -> check(xi, yi);
+        strawberry -> check(xi, yi);
         *move = 0;
     }
-
+    
 }
 void Pacman::move_down(int* move)
 {
@@ -87,9 +109,10 @@ void Pacman::move_down(int* move)
         ++yi;
         count = 100;
         dots -> check(xi, yi);
+        strawberry -> check(xi, yi);
         *move = 0;
     }
-
+    
 }
 void Pacman::move_right(int* move)
 {
@@ -103,9 +126,10 @@ void Pacman::move_right(int* move)
         ++xi;
         count = 100;
         dots -> check(xi, yi);
+        strawberry -> check(xi, yi);
         *move = 0;
     }
-
+    
 }
 void Pacman::move_up(int* move)
 {
@@ -119,9 +143,10 @@ void Pacman::move_up(int* move)
         --yi;
         count = 100;
         dots -> check(xi, yi);
+        strawberry -> check(xi, yi);
         *move = 0;
     }
-
+    
 }
 void Pacman::move(int* move)
 {
@@ -167,7 +192,7 @@ void Pacman::move(int* move)
                 *move = 0;
             }
             break;
-
+            
         default:
             break;
     }
