@@ -24,16 +24,19 @@ int enemy_regime = 0;
 #include "Strawberry.h"
 #include "Enemy1.h" 
 #include "game_process.h"
+#include "menu.h"
+
 
 int main()
 {
     generate_map();
     Pacman _packman;
+    menu();
     Game game(_packman);
+    
     while(game.window.isOpen())
     {
         game.play();
         game.play1(); // в течение 5 секунд enemy замедляются в случае поедания клубники
     }
-    
 }
