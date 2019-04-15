@@ -29,7 +29,7 @@ void menu()
     newgame.setPosition(340, 100);
     menuBg.setPosition(0, 0);
     sf::Music music;
-    music.openFromFile(resourcePath()+"opening.mp3");
+    music.openFromFile(resourcePath()+"opening.wav");
     music.play();
     
     while (window.isOpen())
@@ -67,9 +67,9 @@ void menu()
 
                 window.close();
                 break;
-            }//если нажали первую кнопку, то выходим из меню
+            }//если нажали первую кнопку, то выходим из меню и идем в игру
         }
-        window.clear();
+       // window.clear();
         
         window.draw(menuBg);
         window.draw(newgame);
